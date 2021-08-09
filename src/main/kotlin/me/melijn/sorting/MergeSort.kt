@@ -1,17 +1,19 @@
 package me.melijn.sorting
 
-object MergeSort {
+import me.melijn.sorting.model.SortingAlgorithm
 
-    fun <T : Comparable<T>> sort(toSort: MutableList<T>): List<T> {
+class MergeSort : SortingAlgorithm(false) {
+
+    override fun <T : Comparable<T>> internalSort(toSort: MutableList<T>): List<T> {
         if (toSort.size <= 1) return toSort
-        return internalSort(toSort, 0, toSort.size)
+        return sortRange(toSort, 0, toSort.size)
     }
 
-    private fun <T : Comparable<T>> internalSort(toSort: MutableList<T>, lo: Int, hi: Int): List<T> {
+    private fun <T : Comparable<T>> sortRange(toSort: MutableList<T>, lo: Int, hi: Int): List<T> {
         if ((hi - lo) == 1) return listOf(toSort[lo])
         val split = lo + ((hi - lo) / 2)
-        val part1 = internalSort(toSort, lo, split)
-        val part2 = internalSort(toSort, split, hi)
+        val part1 = sortRange(toSort, lo, split)
+        val part2 = sortRange(toSort, split, hi)
 
         val merged = ArrayList<T>(part1.size + part2.size)
         merge(part1, part2, merged)
@@ -26,8 +28,14 @@ object MergeSort {
         var (i, j) = 0 to 0
         while (i != part1.size || j != part2.size) {
             when {
-                i == part1.size -> merged.add(part2[j++])
-                j == part2.size -> merged.add(part1[i++])
+                i == part1.size -> {
+                    merged.addAll(part2.subList(j, part2.size))
+                    j = part2.size
+                }
+                j == part2.size -> {
+                    merged.addAll(part1.subList(i, part1.size))
+                    i = part1.size
+                }
                 else -> {
                     val (el1, el2) = part1[i] to part2[j]
                     val smallest = if (el1 < el2) {
@@ -37,6 +45,7 @@ object MergeSort {
                         j++
                         el2
                     }
+                    compares++
                     merged.add(smallest)
                 }
             }
@@ -46,25 +55,22 @@ object MergeSort {
 
 fun main() {
     val arr = mutableListOf(5, 2, 3, 0, 56, 7, 5, 7, 9)
-    println(MergeSort.sort(arr))
+    println(MergeSort().sort(arr))
 }
-// LE = the amount of larger elements on the left
-// Compares, for each element 1 + LE
-// Swaps, for each element LE
 
-/** BEST CASE LE **/
-// All the elements on the left are smaller
-// Compares, 1+1+1...+1 = n-1
-// Swaps, 0
+/** BEST CASE **/
+// The left parts while merging are all smaller than the right parts, thus the right part doesn't require compares and can be quickly copied
+// log^2(n) is the amount of times you can divide the list in 2 before reaching 1/2
+// (n-1)/2 + (n-2)/2 + (n-4)/2 ...
+// n/2 * log^2(n) - (1/2 + 1 + 2 + 4...)
+// n/2 * log^2(n) - n/2
+// ~ n/2 * log^2(n)
 
-/** WORST CASE LE **/
-// All the elements on the left are larger
-// Compares, 1 + 2 + ... + n-2 + n-1 = n*(n-1)/2 | ~n^2/2
-// Swaps, 1 + 2 + ... + n-2 + n-1 | ~n^2/2
 
-/** AVERAGE CASE LE **/
-// Half of the elements on the left are largerx
-// Compares, Swaps | ~n^2/4
+/** WORST CASE **/
+// n-1 + n-2 + n-4 + n-8 ...
+// n * log^2(n) - (1 + 2 + 4 + 8 ...)
+// n * log^2(n) - n
+// ~ n * log^2(n)
 
-/** Each element is max. 3 positions away from its final location **/
-// ~5n/2
+

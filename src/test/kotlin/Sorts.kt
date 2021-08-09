@@ -6,7 +6,7 @@ class Sorts {
 
     @Test
     fun testSort() {
-        val algorithms = listOf(QuickSort(), SelectionSort(), InsertionSort())
+        val algorithms = listOf(QuickSort(), SelectionSort(), InsertionSort(), MergeSort())
 
         for (algorithm in algorithms) {
             println("--- Selected ${algorithm.javaClass.name}")
