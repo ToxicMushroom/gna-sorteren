@@ -4,13 +4,13 @@ object SelectionSort {
 
     fun <T : Comparable<T>> sort(toSort: MutableList<T>): MutableList<T> {
         for (i in toSort.indices) {
-            var min = -1
+            var min = i
             for (j in i until toSort.size) {
                 if (toSort[min] > toSort[j]) {
                     min = j
                 }
             }
-            if (min != -1) toSort.swap(i, min)
+            if (min != i) toSort.swap(i, min)
         }
         return toSort
     }
