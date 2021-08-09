@@ -1,10 +1,12 @@
 package me.melijn.sorting
 
-object QuickSort {
+import me.melijn.sorting.model.SortingAlgorithm
 
-    fun <T : Comparable<T>> sort(list: MutableList<T>): MutableList<T> {
-        sort(list, 0, list.size - 1)
-        return list
+class QuickSort : SortingAlgorithm(true) {
+
+    override fun <T : Comparable<T>> internalSort(toSort: MutableList<T>): MutableList<T> {
+        sort(toSort, 0, toSort.size - 1)
+        return toSort
     }
 
     private fun <T : Comparable<T>> sort(list: MutableList<T>, low: Int, high: Int) {
@@ -16,10 +18,9 @@ object QuickSort {
 
     private fun <T : Comparable<T>> partition(list: MutableList<T>, low: Int, high: Int): Int {
         var (i, j) = low to high + 1
-        val part = list[low]
         while (true) {
-            while (list[++i] < part) if (i == high) break
-            while (part < list[--j]) if (j == low) break
+            while (isLarger(list, low, ++i)) if (i == high) break
+            while (isLarger(list, --j, low)) if (j == low) break
             if (i >= j) break
             list.swap(i, j)
         }
@@ -31,7 +32,7 @@ object QuickSort {
 
 fun main() {
     val arr = mutableListOf(5, 2, 3, 0, 56, 7, 5, 7, 9)
-    println(QuickSort.sort(arr))
+    println(QuickSort().sort(arr))
 }
 // LE = the amount of larger elements on the left
 // Compares, for each element 1 + LE

@@ -2,21 +2,6 @@ package me.melijn.sorting
 
 import kotlin.random.Random
 
-object Utils {
-
-    fun <T : Comparable<T>> isLarger(toSort: List<T>, maybeLargerAt: Int, targetAt: Int): Boolean {
-        val maybeLargerItem = toSort[maybeLargerAt]
-        val target = toSort[targetAt]
-        return maybeLargerItem > target
-    }
-}
-fun <E> MutableList<E>.swap(index1: Int, index2: Int) {
-    val oldI = this[index1]
-    val newI = this[index2]
-    this[index1] = newI
-    this[index2] = oldI
-}
-
 val Names =  mutableListOf(
     "Tiny Nielsen",
     "Sonny Valletta",
@@ -126,3 +111,19 @@ val RandomEqualStrings = Array(200) { // 20 Strings
         Random.nextInt('a'.code, 'z'.code + 1).toChar()
     }.joinToString("")
 }.toMutableList()
+
+fun getRandomIntList(size: Int, range: IntRange): MutableList<Int> {
+    val list = mutableListOf<Int>()
+    repeat(size) { list.add(Random.nextInt(range.first, range.last)) }
+    list.shuffle()
+    return list
+}
+
+fun <E : Comparable<E>> isSorted(list: List<E>): Boolean {
+    var prev = list.first()
+    for (el in list) {
+        if (el >= prev) prev = el
+        else return false
+    }
+    return true
+}

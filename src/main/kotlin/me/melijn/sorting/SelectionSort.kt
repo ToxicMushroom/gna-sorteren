@@ -1,12 +1,14 @@
 package me.melijn.sorting
 
-object SelectionSort {
+import me.melijn.sorting.model.SortingAlgorithm
 
-    fun <T : Comparable<T>> sort(toSort: MutableList<T>): MutableList<T> {
+class SelectionSort : SortingAlgorithm(true) {
+
+    override fun <T : Comparable<T>> internalSort(toSort: MutableList<T>): MutableList<T> {
         for (i in toSort.indices) {
             var min = i
             for (j in i until toSort.size) {
-                if (toSort[min] > toSort[j]) {
+                if (isLarger(toSort, min, j)) {
                     min = j
                 }
             }
@@ -18,7 +20,7 @@ object SelectionSort {
 
 fun main() {
     val arr = mutableListOf(5, 2, 3, 0, 56, 7, 5, 7, 9)
-    println(SelectionSort.sort(arr))
+    println(SelectionSort().sort(arr))
 }
 
 // Tijdscomplexiteit ~n^2/2

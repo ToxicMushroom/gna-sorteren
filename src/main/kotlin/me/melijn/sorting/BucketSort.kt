@@ -10,7 +10,7 @@ object BucketSort {
         for (element in toSort) buckets[element[0].lowercaseChar()]?.add(element)
         val sorted = mutableListOf<String>()
         for ((_, entries) in buckets) {
-            sorted.addAll(QuickSort.sort(entries))
+            sorted.addAll(QuickSort().sort(entries))
         }
 
         return sorted
