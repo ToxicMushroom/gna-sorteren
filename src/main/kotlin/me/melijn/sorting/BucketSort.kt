@@ -2,7 +2,7 @@ package me.melijn.sorting
 
 object BucketSort {
 
-    val buckets = mutableMapOf<Char, MutableList<String>>()
+    private val buckets = mutableMapOf<Char, MutableList<String>>()
 
     fun sort(toSort: MutableList<String>): MutableList<String> {
         if (toSort.size <= 1) return toSort
