@@ -76,17 +76,25 @@ fun main() {
 /** BEST CASE **/
 // - partition takes n compares
 // - split is always balanced
-// T(n) = 2T(n/2) + paritioning(n)
-// T(n) = 2T(n/2) + n
-// T(n) = 4T(n/4) + n + n
-// ~ n log^2(n)
+// T(1) = 0
+// T(n) = 2T(n/2) + partitioning(n)
+//      = 2T(n/2) + n
+//      = 4T(n/4) + n + n
+// ~ n * log^2(n)
 
 /** WORST CASE **/
 // Partition element causes 0 Elements in one half and n-1 in the other half for each partition
 // T(n) = T(n-1) + partitioning(n)
-//      = T(n-2) + n-1
+//      = T(n-2) + n + n
+//      = n * (n) = n^2
+// ~ n^2
+
+/** WORST CASE CHANCE **/
+// we don't need to partition 1 sized arrays so those aren't counted
+// 2/n * 2/n-1 * 2/n-2 ... 2/2 = 2^(n-1)/n!
+// for 8: 2/8 * 2/7 * 2/6 * 2/5 * 2/4 * 2/3 * 2/2 = 2^(7)/8! = 0.003
 
 /** AVERAGE CASE **/
-// See calculation in book
+// See explanation in book/les 4
 // ~ 2n*log^e(2)*log^2(n) = ~ 1,39 * n * log^2(n)
 // notation I used is log^base(value)
