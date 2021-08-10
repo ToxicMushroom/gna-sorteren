@@ -1,4 +1,4 @@
-package me.melijn.sorting
+package me.melijn.sorting.utils
 
 import kotlin.random.Random
 

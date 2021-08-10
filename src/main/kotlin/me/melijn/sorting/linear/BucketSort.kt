@@ -1,4 +1,7 @@
-package me.melijn.sorting
+package me.melijn.sorting.linear
+
+import me.melijn.sorting.comparing.QuickSort
+import me.melijn.sorting.utils.Names
 
 object BucketSort {
 

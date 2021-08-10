@@ -1,4 +1,6 @@
-package me.melijn.sorting
+package me.melijn.sorting.linear
+
+import me.melijn.sorting.utils.RandomEqualStrings
 
 // LSD (Radix) sort
 object LSDSort {

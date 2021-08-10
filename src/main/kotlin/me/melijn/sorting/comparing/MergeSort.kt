@@ -1,4 +1,4 @@
-package me.melijn.sorting
+package me.melijn.sorting.comparing
 
 import me.melijn.sorting.model.SortingAlgorithm
 

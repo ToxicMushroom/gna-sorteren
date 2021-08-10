@@ -1,11 +1,16 @@
-import me.melijn.sorting.*
+import me.melijn.sorting.comparing.InsertionSort
+import me.melijn.sorting.comparing.MergeSort
+import me.melijn.sorting.comparing.QuickSort
+import me.melijn.sorting.comparing.SelectionSort
 import me.melijn.sorting.model.Timer
+import me.melijn.sorting.utils.getRandomIntList
+import me.melijn.sorting.utils.isSorted
 import org.junit.jupiter.api.Test
 
 class Sorts {
 
     @Test
-    fun testSort() {
+    fun testComaringSorts() {
         val algorithms = listOf(QuickSort(), SelectionSort(), InsertionSort(), MergeSort())
 
         for (algorithm in algorithms) {
