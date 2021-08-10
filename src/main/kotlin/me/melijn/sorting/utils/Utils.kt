@@ -106,11 +106,17 @@ val Names =  mutableListOf(
 )
 
 
-val RandomEqualStrings = Array(200) { // 20 Strings
-    Array(10) { // 10 characters long
-        Random.nextInt('a'.code, 'z'.code + 1).toChar()
-    }.joinToString("")
-}.toMutableList()
+fun getRandomStrings(amount: Int, size: Int): MutableList<String> {
+    val list = mutableListOf<String>()
+    repeat(amount) {
+        var string = ""
+        repeat(size) {
+            string += Random.nextInt('a'.code, 'z'.code + 1).toChar()
+        }
+        list.add(string)
+    }
+    return list
+}
 
 fun getRandomIntList(size: Int, range: IntRange): MutableList<Int> {
     val list = mutableListOf<Int>()

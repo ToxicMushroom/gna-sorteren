@@ -1,26 +1,29 @@
 package me.melijn.sorting.linear
 
-import me.melijn.sorting.utils.RandomEqualStrings
+import me.melijn.sorting.utils.getRandomStrings
 
-// LSD (Radix) sort
+/**
+ * LSD (Radix) sort
+ * Consider characters from right to left
+ * Stable sort using dth character as key
+ * Uses counting sort (a stable sort)
+ **/
 object LSDSort {
-    // Consider characters from right to left
-    // Stable sort using dth character as key
-    // Uses counting sort
-    // ~ 7WN + 3WR + 1
 
+
+    private const val aCode = 'a'.code
+
+    /** Requires strings of equal length: W **/
     fun sort(toSort: MutableList<String>): MutableList<String> {
         if (toSort.size <= 1) return toSort
 
         for (i in (toSort[0].length - 1) downTo 0) {
             val counter = Array(26) { 0 }
-            for (el in toSort)
-                counter[el[i].code - 'a'.code]++
-            for (j in 0 until counter.size - 2) counter[j + 1] += counter[j]
+
+            for (el in toSort) counter[el[i].code - aCode]++
+            for (j in 0 until counter.size - 1) counter[j + 1] += counter[j]
             val aux = Array(toSort.size) { "" }
-            for (j in (toSort.size - 1) downTo 0) {
-                aux[counter[toSort[j][i].code - 'a'.code]-- - 1] = toSort[j]
-            }
+            for (j in (toSort.size - 1) downTo 0) aux[counter[toSort[j][i].code - aCode]-- - 1] = toSort[j]
             for (j in aux.indices) toSort[j] = aux[j]
         }
         return toSort
@@ -29,7 +32,7 @@ object LSDSort {
 }
 
 fun main() {
-    println(LSDSort.sort(RandomEqualStrings))
+    println(LSDSort.sort(getRandomStrings(200, 10)))
 }
 
 // W: word length
