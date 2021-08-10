@@ -11,12 +11,20 @@ class QuickSort : SortingAlgorithm(true) {
 
     private fun <T : Comparable<T>> sort(list: MutableList<T>, low: Int, high: Int) {
         if (high <= low) return
-        val partitionIndex = partition(list, low, high)
+        val partitionIndex = partitionHoare(list, low, high)
         sort(list, low, partitionIndex - 1)
         sort(list, partitionIndex + 1, high)
     }
 
-    private fun <T : Comparable<T>> partition(list: MutableList<T>, low: Int, high: Int): Int {
+    // Hoare
+    // [                        ]
+    //  ^                      ^
+    // (low,pivot)             high
+
+    // [ | <=pivot |     | >=pivot ]
+    //  ^           ^   ^
+    // pivot        i   j
+    private fun <T : Comparable<T>> partitionHoare(list: MutableList<T>, low: Int, high: Int): Int {
         var (i, j) = low to high + 1
         while (true) {
             while (isLarger(list, low, ++i)) if (i == high) break
@@ -24,9 +32,34 @@ class QuickSort : SortingAlgorithm(true) {
             if (i >= j) break
             list.swap(i, j)
         }
-        list.swap(low, j)
+        list.swap(low, j) // swap pivot
         return j
     }
+
+    // Lomuto
+    //  [                        ]    <- represents a list
+    // ^ ^                      ^
+    // i (j,low)                (high, pivot)
+
+    // [ <pivot | >=pivot |j    | ]
+    //  ^      ^           ^     ^-- pivot,high
+    //  (low)  i           progress
+    private fun <T : Comparable<T>> partitionLomuto(list: MutableList<T>, low: Int, high: Int): Int {
+        var i = low-1 // index tracker for last element that is smaller than pivot
+        val pivot = list[high] // pivot is most right el
+        for (j in low until high) { // j in [low; high-i]
+            if (isSmallerThanEl(list, j, pivot)) list.swap(++i, j)
+            // Else can stay in place and j will move up 1 pos
+        }
+        val finalPivotIndex = i+1
+        list.swap(finalPivotIndex, high) // move pivot in between smaller and bigger/equal part
+        return finalPivotIndex
+    }
+    // [ <pivot | >=pivot | ]
+    //  ^      ^           ^-- pivot,high
+    //  (low)  i
+    // After the for loop, pivot gets swapped with el[i+1] -> [ <pivot | | >=pivot ]
+    //                                                                  ^-- pivot
 }
 
 
@@ -34,11 +67,13 @@ fun main() {
     val arr = mutableListOf(5, 2, 3, 0, 56, 7, 5, 7, 9)
     println(QuickSort().sort(arr))
 }
-// LE = the amount of larger elements on the left
-// Compares, for each element 1 + LE
-// Swaps, for each element LE
+/** **/
+// different parition implementations:
+// 1. create 2 arrays left[] and right[], for el in elements: if el < pivot { put into left[] } else { put into right [] }, concat left[] + pivot + right[]
+// 2. https://en.wikipedia.org/wiki/Quicksort#Hoare_partition_scheme (chosen for the code above)
+// 3. https://en.wikipedia.org/wiki/Quicksort#Lomuto_partition_scheme
 
-/** BEST CASE LE **/
+/** BEST CASE **/
 // - partition takes n compares
 // - split is always balanced
 // T(n) = 2T(n/2) + paritioning(n)
@@ -46,7 +81,7 @@ fun main() {
 // T(n) = 4T(n/4) + n + n
 // ~ n log^2(n)
 
-/** WORST CASE LE **/
+/** WORST CASE **/
 // Partition element causes 0 Elements in one half and n-1 in the other half for each partition
 // T(n) = T(n-1) + partitioning(n)
 //      = T(n-2) + n-1
@@ -55,6 +90,3 @@ fun main() {
 // See calculation in book
 // ~ 2n*log^e(2)*log^2(n) = ~ 1,39 * n * log^2(n)
 // notation I used is log^base(value)
-
-/** Each element is max. 3 positions away from its final location **/
-// ~5n/2

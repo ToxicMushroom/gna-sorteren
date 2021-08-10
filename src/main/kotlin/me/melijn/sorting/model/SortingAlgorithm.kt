@@ -28,4 +28,10 @@ abstract class SortingAlgorithm(val inplace: Boolean) {
         this[index1] = newI
         this[index2] = oldI
     }
+
+    fun <T : Comparable<T>> isSmallerThanEl(toSort: MutableList<T>, maybeLargerAt: Int, targetEl: T): Boolean {
+        compares++
+        val maybeLargerItem = toSort[maybeLargerAt]
+        return maybeLargerItem < targetEl
+    }
 }
