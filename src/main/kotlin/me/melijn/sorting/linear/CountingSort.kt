@@ -2,6 +2,9 @@ package me.melijn.sorting.linear
 
 import me.melijn.sorting.utils.Names
 
+/**
+ * Also goes by: Key-indexed sorting
+ */
 object CountingSort {
 
     fun sort(toSort: MutableList<Char>): MutableList<Char> {

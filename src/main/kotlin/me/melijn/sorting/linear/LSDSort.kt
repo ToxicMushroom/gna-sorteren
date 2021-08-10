@@ -31,3 +31,9 @@ object LSDSort {
 fun main() {
     println(LSDSort.sort(RandomEqualStrings))
 }
+
+// W: word length
+// R: different characters
+// Each word needs to be the same length or missing characters need to be replaced with some other letter
+// ~7WN + 3WR
+// ~N+R extra space
