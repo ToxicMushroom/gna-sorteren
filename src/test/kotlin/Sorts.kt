@@ -1,7 +1,4 @@
-import me.melijn.sorting.comparing.InsertionSort
-import me.melijn.sorting.comparing.MergeSort
-import me.melijn.sorting.comparing.QuickSort
-import me.melijn.sorting.comparing.SelectionSort
+import me.melijn.sorting.comparing.*
 import me.melijn.sorting.model.Timer
 import me.melijn.sorting.utils.getRandomIntList
 import me.melijn.sorting.utils.isSorted
@@ -11,7 +8,7 @@ class Sorts {
 
     @Test
     fun testComaringSorts() {
-        val algorithms = listOf(QuickSort(), SelectionSort(), InsertionSort(), MergeSort())
+        val algorithms = listOf(SelectionSort(), InsertionSort(), QuickSort(), MergeSort(), HeapSort())
 
         for (algorithm in algorithms) {
             println("--- Selected ${algorithm.javaClass.name}")
