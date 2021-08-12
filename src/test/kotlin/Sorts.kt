@@ -1,4 +1,5 @@
 import me.melijn.sorting.comparing.*
+import me.melijn.sorting.model.NanoTimer
 import me.melijn.sorting.model.Timer
 import me.melijn.sorting.utils.getRandomIntList
 import me.melijn.sorting.utils.isSorted
@@ -24,5 +25,30 @@ class Sorts {
             println("Exchanges: ${algorithm.exchanges}")
             println("Compares: ${algorithm.compares}")
         }
+    }
+
+    @Test
+    fun sex() {
+        repeat(2000) { //warmup
+            hot2()
+        }
+        val loops = 10000
+        val timer = NanoTimer()
+        repeat(loops) { //warmup
+            hot2()
+        }
+        val duration = timer.stop()
+        println(duration/loops)
+    }
+
+    private fun hot() {
+        val id = 222046562543468545
+        val content = "<@222046562543468545>"
+        content.equals("<@$id>")
+    }
+    private fun hot2() {
+        val id = 222046562543468545
+        val content = "<@!222046562543468545>"
+        content.equals("<@$id>") || content.equals("<@!$id>")
     }
 }
