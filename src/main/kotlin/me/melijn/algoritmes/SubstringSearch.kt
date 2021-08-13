@@ -13,11 +13,11 @@ class SubstringSearch {
     fun contains(string: String, containsString: String): Int {
         for (i in string.indices) {
             for (j in containsString.indices) {
-                if (string[i] == containsString[j]) {
+                if (string[i + j] == containsString[j]) {
                     if (j == containsString.length - 1) {
-                        return i - containsString.length
+                        return i
                     }
-                }
+                } else break
             }
         }
 
@@ -85,8 +85,11 @@ class SubstringSearch {
 }
 
 fun main(args: Array<String>) {
-    val string = "pifhjerwiuoyhfgoieruhfgiourheiwugyh rhihgioruehygiehffgi uhenifjhnasifhlhfdashf klj dhfoiewjqwrhdskjhfkhja h dadaf iqweuioure hfeiuwfuqywiuyrieuwyvnqoiu fiouwehfq"
+    val string =
+        "pifhjerwiuoyhfgoieruhfgiourheiwugyh rhihgioruehygiehffgi uhenifjhnasifhlhfdashf klj dhfoiewjqwrhdskjhfkhja h dadaf iqweuioure hfeiuwfuqywiuyrieuwyvnqoiu fiouwehfq"
     val pattern = "dada"
+    val bruteRes = SubstringSearch().contains(string, pattern)
+    println(bruteRes)
     val res = SubstringSearch().containsKMP(string, pattern)
     println(res)
     println(string.substring(res, res + pattern.length))
