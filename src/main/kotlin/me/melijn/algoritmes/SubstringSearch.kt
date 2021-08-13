@@ -24,7 +24,39 @@ class SubstringSearch {
         return -1
     }
 
-    // TODO: Boyer Moore
+    /**
+     * Works by brute-forcing character matches, but skip over letters that don't occur in our patterns, or max skip letters if they occur
+     * Worst case time complexity: ~N*M
+     * @param string string's length is the N
+     * @param pattern string's length is the M
+     *
+     * @returns the start index of a search hit
+     */
+    fun containsBoyerMoore(string: String, pattern: String): Int {
+        val lastMap = mutableMapOf<Char, Int>()
+        for (c in pattern.toSet()) lastMap[c] = pattern.lastIndexOf(c)
+        var i = pattern.length - 1
+        while (i < string.length) {
+            for (j in pattern.indices) {
+                val backI = i - j
+                val backJ = pattern.length - 1 - j
+
+                val onChar = string[backI]
+                val pChar = pattern[backJ]
+                if (onChar != pChar) {
+                    val lastAt = lastMap.getOrDefault(onChar, -1)
+                    val needMove = if (lastAt == -1) pattern.length - j
+                    else pattern.length - lastAt - 1
+                    i += needMove
+                    break
+                } else if (backJ == 0) return backI
+            }
+        }
+
+        return -1
+    }
+
+
     // TODO: Rabin Karp (las vegas variant = if hash matches, check the match, monte carlo variant = if hash is equal,
     //  assume match [gebruik hier een grootte modulo voor veel hash waardes en een kleine kans op false-gevallen])
 
@@ -86,11 +118,15 @@ class SubstringSearch {
 
 fun main(args: Array<String>) {
     val string =
-        "pifhjerwiuoyhfgoieruhfgiourheiwugyh rhihgioruehygiehffgi uhenifjhnasifhlhfdashf klj dhfoiewjqwrhdskjhfkhja h dadaf iqweuioure hfeiuwfuqywiuyrieuwyvnqoiu fiouwehfq"
+        "pifhjerwiuoyhfgoieruhfgiourheiwugyh rhihgioruehygiehffgi uhenifjhnasifhlhfdashf klj dhfoiewjqwrhdskjhfkhja h daddadaf iqweuioure hfeiuwfuqywiuyrieuwyvnqoiu fiouwehfq"
     val pattern = "dada"
     val bruteRes = SubstringSearch().contains(string, pattern)
     println(bruteRes)
     val res = SubstringSearch().containsKMP(string, pattern)
     println(res)
+    val res2 = SubstringSearch().containsBoyerMoore(string, pattern)
+    println(res2)
+    val res3 = SubstringSearch().containsBoyerMoore("ihfsdaodqfhdshdadaddadadadaoahddoshaodh", "dadadada")
+    println(res3)
     println(string.substring(res, res + pattern.length))
 }
