@@ -1,6 +1,9 @@
 package me.melijn.algoritmes.model
 
-class Heap<T>(private val comparator: Comparator<T>) {
+/**
+ * Default comparator is a MinHeap
+ */
+open class MinHeap<T : Comparable<T>> {
 
     private val heapArray = ArrayList<T>()
     val heapSize: Int
@@ -13,7 +16,7 @@ class Heap<T>(private val comparator: Comparator<T>) {
 
     fun lookMax(): T? = heapArray.getOrNull(0)
 
-    fun pop(): T {
+    fun poll(): T {
         if (heapArray.size == 0)
             throw IllegalStateException("Trying to pop with no elements on the heap, please check the heapSize")
 
@@ -34,20 +37,20 @@ class Heap<T>(private val comparator: Comparator<T>) {
 
         val child1 = heapArray.getOrNull(child1Index)
         val child2 = heapArray.getOrNull(child2Index)
-        val (biggestChildIndex, biggestChild) =
+        val (smallestChildIndex, smallestChild) =
             if (child1 != null && child2 != null) {
-                // if child1 is bigger or equal to child2 we select child1
-                if (comparator.compare(child1, child2) >= 0) child1Index to child1
+                // if child1 is smaller than child2 we select child1
+                if (child1 < child2) child1Index to child1
                 else child2Index to child2
             } else if (child1 == null) {
                 if (child2 == null) return
                 child2Index to child2
             } else child1Index to child1
 
-        if (comparator.compare(value, biggestChild) < 0) { // if the value is smaller than the biggest child, we swap em
-            heapArray[index] = biggestChild
-            heapArray[biggestChildIndex] = value
-            sinkDown(biggestChildIndex, value) // recursively check whether the value needs to be sunk further
+        if (value > smallestChild) { // if the value is bigger than the smallest child, we swap em
+            heapArray[index] = smallestChild
+            heapArray[smallestChildIndex] = value
+            sinkDown(smallestChildIndex, value) // recursively check whether the value needs to be sunk further
         }
     }
 
@@ -59,7 +62,7 @@ class Heap<T>(private val comparator: Comparator<T>) {
         val parentIndex = getParentIndex(index)
 
         val parent = heapArray[parentIndex]
-        if (comparator.compare(parent, value) < 0) { // if the parent is smaller than the swimming child, we swap em
+        if (parent > value) { // if the parent is bigger than the swimming child, we swap em
             heapArray[parentIndex] = value
             heapArray[index] = parent
             swimUp(parentIndex, value) // recursively check whether the value needs to be swum up further
@@ -67,7 +70,7 @@ class Heap<T>(private val comparator: Comparator<T>) {
     }
 
     companion object {
-        fun getChildIndexes(index: Int) = (((index + 1) * 2) - 1 to ((index + 1) * 2))
-        fun getParentIndex(index: Int): Int = ((index - 1) / 2)
+        inline fun getChildIndexes(index: Int) = (((index + 1) * 2) - 1 to ((index + 1) * 2))
+        inline fun getParentIndex(index: Int): Int = ((index - 1) / 2)
     }
 }

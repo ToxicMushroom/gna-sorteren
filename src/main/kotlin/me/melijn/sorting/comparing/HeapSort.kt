@@ -1,13 +1,14 @@
 package me.melijn.sorting.comparing
 
+import me.melijn.algoritmes.model.MinHeap
 import me.melijn.sorting.model.SortingAlgorithm
 import me.melijn.sorting.utils.getRandomIntList
-import java.util.*
 
 class HeapSort : SortingAlgorithm(false) {
 
     override fun <T : Comparable<T>> internalSort(toSort: MutableList<T>): List<T> {
-        val queue = PriorityQueue(toSort) // TODO: Own priorityqueue :p
+        val queue = MinHeap<T>()
+        for (el in toSort) queue.add(el)
         for (el in toSort.indices) {
             val max = queue.poll()
             toSort[el] = max
